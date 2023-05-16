@@ -13,15 +13,18 @@ function RewardHistory() {
   }, [id]);
 
   useEffect(() => {
-    fetch(`/api/users/${id}/rewards`)
+    fetch(`http://localhost:5000/api/users/${id}/rewards`)
       .then(response => response.json())
       .then(data => setRewardHistory(data));
   }, [id]);
 
+  console.log(user);
+  console.log(rewardHistory);
+
   return (
     <div className="container">
       <h2>Reward History</h2>
-      <p>Reward Balance: {user !== null && user.reward.balance}</p>
+      <p>Reward Balance: {user !== null && user[0].reward.balance}</p>
       <div className="table-div">
         <table>
           <thead>
@@ -29,14 +32,14 @@ function RewardHistory() {
               <th>#</th>
               <th>Date-Time</th>
               <th>Rewards received</th>
-              <th>User Name</th>
+              <th>User Name(Given By)</th>
             </tr>
           </thead>
           <tbody>
             {rewardHistory.map((reward, index) => (
               <tr key={reward.timestamp}>
                 <td>{index + 1}</td>
-                <td>{reward.timestamp}</td>
+                <td>{reward.timeStamp}</td>
                 <td>{reward.amount}</td>
                 <td>{reward.givenBy}</td>
               </tr>

@@ -10,18 +10,17 @@ function P5History() {
         fetch(`http://localhost:5000/api/users/${id}`)
             .then(response => response.json())
             .then(data => setUser(data));
-    }, [id]);
 
-    useEffect(() => {
         fetch(`http://localhost:5000/api/users/${id}`)
             .then(response => response.json())
-            .then(data => setP5History(data.p5.history));
+            .then(data => setP5History(data[0].p5.history));
     }, [id]);
 
-    const handleDelete = (historyId) => {
-        fetch(`http://localhost:5000/api/users/${id}/p5/${historyId}`, { method: 'DELETE' })
+    const handleDelete = async (historyId) => {
+        console.log(historyId);
+        await fetch(`http://localhost:5000/api/users/${id}/p5/${historyId}`, { method: 'DELETE' })
             .then(() => {
-                setP5History(p5History.filter(history => history.timestamp !== historyId));
+                setP5History(p5History.filter(history => history.timeStamp !== historyId));
             });
     };
 
@@ -31,7 +30,7 @@ function P5History() {
         <div className="container">
             <h2>P5 History</h2>
             <Link to={`/${id}/rewards/new`}><button>Create New Reward</button></Link>
-            {user !== null && <p>P5 Balance: {user.p5.balance}</p>}
+            {user !== null && <p>P5 Balance: {user[0].p5.balance}</p>}
             <div className="table-div">
 
                 <table>
@@ -40,19 +39,19 @@ function P5History() {
                             <th>#</th>
                             <th>Date-Time</th>
                             <th>P5 given</th>
-                            <th>User Name</th>
+                            <th>User Name(Given To)</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {p5History.map((history, index) => (
-                            <tr key={history.timestamp}>
+                        {p5History.map((p5, index) => (
+                            <tr key={p5.timeStamp}>
                                 <td>{index + 1}</td>
-                                <td>{history.timestamp}</td>
-                                <td>{history.amount}</td>
-                                <td>{history.givenTo}</td>
+                                <td>{p5.timeStamp}</td>
+                                <td>{p5.amount}</td>
+                                <td>{p5.givenTo}</td>
                                 <td>
-                                    <button onClick={() => handleDelete(history.timestamp)}>Delete</button>
+                                    <button onClick={() => handleDelete(p5.timeStamp)}>Delete</button>
                                 </td>
                             </tr>
                         ))}

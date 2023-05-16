@@ -8,14 +8,14 @@ function NewUser() {
         const name = document.getElementById('name').value;
         fetch('http://localhost:5000/api/users', {
             method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
             body: JSON.stringify({ name })
         })
             .then(response => response.json())

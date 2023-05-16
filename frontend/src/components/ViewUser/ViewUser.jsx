@@ -6,6 +6,7 @@ import "./ViewUser.css";
 function ViewUser() {
     const { id } = useParams();
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
   
     useEffect(() => {
       fetch(`http://localhost:5000/api/users/${id}`)
@@ -13,15 +14,16 @@ function ViewUser() {
         .then(data => setUser(data));
     }, [id]);
   
-    const history = useNavigate();
   
     const handleP5Click = () => {
-      history(`/${id}/p5`);
+      navigate(`/${id}/p5`);
     };
   
     const handleRewardClick = () => {
-      history(`/${id}/rewards`);
+      navigate(`/${id}/rewards`);
     };
+
+    console.log(user);
   
     return (
       <div className="container">
@@ -30,10 +32,10 @@ function ViewUser() {
             <h2>User Details</h2>
             <form>
               <label htmlFor="name">Name:</label>
-              <input type="text" id="name" value={user.name} disabled />
+              <input type="text" id="name" value={user[0].name} disabled />
             </form>
-            <button onClick={handleP5Click}>P5 Balance: {user.p5.balance}</button>
-            <button onClick={handleRewardClick}>Reward Balance: {user.reward.balance}</button>
+            <button onClick={handleP5Click}>P5 Balance: {user[0].p5.balance}</button>
+            <button onClick={handleRewardClick}>Reward Balance: {user[0].reward.balance}</button>
           </div>
         ) : (
           <div>Loading user...</div>

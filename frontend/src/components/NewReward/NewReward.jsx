@@ -12,9 +12,37 @@ function NewReward() {
 
   useEffect(() => {
     loadUserData();
+  }, []);
+  
+  useEffect(() => {
+    loadCurrentUserData();
   }, [id]);
 
   const loadUserData = async () => {
+    try {
+      const URL = `${process.env.REACT_APP_BASE_URL}/api/users`;
+      const response = await fetch(URL, {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer"
+      });
+
+      let data = await response.json();
+
+      setUsers(data.filter((user) => user.id !== id));
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const loadCurrentUserData = async () => {
     try {
       const URL = `http://localhost:5000/api/users/${id}`;
       const response = await fetch(URL, {
@@ -31,8 +59,7 @@ function NewReward() {
 
       let data = await response.json();
 
-      setUsers(data);
-      setP5Balance(data.p5.balance);
+      setP5Balance(data[0].p5.balance);
 
     } catch (error) {
       console.log(error);
@@ -58,7 +85,7 @@ function NewReward() {
     }
   };
 
-  console.log(users);
+  // console.log(users);
 
   return (
     <div className="container">
@@ -66,7 +93,7 @@ function NewReward() {
       <label htmlFor="user">User:</label>
       <select id="user" onChange={e => setSelectedUser(e.target.value)}>
         <option value="">Select user</option>
-        {[users].map(user => (
+        {users.map((user) => (
           <option key={user.id} value={user.id}>{user.name}</option>
         ))}
       </select>

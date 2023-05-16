@@ -20,8 +20,8 @@ function UsersList() {
         referrerPolicy: "no-referrer"
       });
 
-      let jsonData = await response.json();
-      setUsers(jsonData);
+      let usersData = await response.json();
+      setUsers(usersData);
 
     } catch (error) {
       console.log(error);
@@ -57,7 +57,7 @@ function UsersList() {
                 <td>{user.p5.balance}</td>
                 <td>{user.reward.balance}</td>
                 <td>
-                  <Link to={`/${user.id}`}>Edit</Link>
+                  <Link to={`/${user.id}`}><button>Edit</button></Link>
                 </td>
               </tr>
             ))}

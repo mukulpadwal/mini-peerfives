@@ -3,6 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const userRouter = require("./Routes/User");
+const mongoConnect = require("./mongooseConnect");
+
+mongoConnect();
 
 const PORT = 5000;
 
