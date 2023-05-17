@@ -26,14 +26,12 @@ Mini Peerfives allows users to reward other people with peerfives (P5) points.
 ```
 - A button to create new user - clicking on which user will be redirected to /new/ route
 - Basic Table layout with all users
-```
 Table should have 6 columns: #, Name, P5 balance, Reward balance, Login
 # - Static count number starting with 1
 Name - User's name
 P5 balance - self explanatory
 Reward balance - self explanatory
 Login - a edit button, clicking on which user will be redirected to /:id route
-```
 - Show each user in separate row
 ```
 
