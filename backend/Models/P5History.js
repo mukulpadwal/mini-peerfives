@@ -14,6 +14,8 @@ const p5HistorySchema = new mongoose.Schema({
     givenTo: {
         type: String
     }
-});
+}, {
+    strictPopulate: false
+  });
 
 module.exports = mongoose.model("P5History", p5HistorySchema);

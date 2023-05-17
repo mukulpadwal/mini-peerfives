@@ -6,7 +6,7 @@ function NewUser() {
 
     const handleSave = () => {
         const name = document.getElementById('name').value;
-        fetch('http://localhost:5000/api/users', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/users`, {
             method: "POST",
             mode: "cors",
             cache: "no-cache",

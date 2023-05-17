@@ -7,7 +7,7 @@ function UsersList() {
 
   const loadUserData = async () => {
     try {
-      const URL = "http://localhost:5000/api/users";
+      const URL = `${process.env.REACT_APP_BACKEND_BASE_URL}/api/users`;
       const response = await fetch(URL, {
         method: "GET",
         mode: "cors",
@@ -32,7 +32,7 @@ function UsersList() {
     loadUserData();
   }, []);
 
-  console.log(users);
+  // console.log(users);
 
   return (
     <div className="container">

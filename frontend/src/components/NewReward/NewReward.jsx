@@ -44,7 +44,7 @@ function NewReward() {
 
   const loadCurrentUserData = async () => {
     try {
-      const URL = `http://localhost:5000/api/users/${id}`;
+      const URL = `${process.env.REACT_APP_BASE_URL}/api/users/${id}`;
       const response = await fetch(URL, {
         method: "GET",
         mode: "cors",
@@ -68,7 +68,7 @@ function NewReward() {
 
   const handleSave = () => {
     if (amount > 0 && amount <= 100 && amount <= p5Balance) {
-      fetch(`http://localhost:5000/api/users/${id}/p5`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/api/users/${id}/p5`, {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -85,7 +85,7 @@ function NewReward() {
     }
   };
 
-  // console.log(users);
+  console.log(users);
 
   return (
     <div className="container">

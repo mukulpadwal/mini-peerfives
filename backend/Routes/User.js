@@ -2,37 +2,37 @@ const express = require("express");
 const User = require("../Models/User.js");
 const P5History = require("../Models/P5History.js");
 const RewardHistory = require("../Models/RewardHistory.js");
+const generateId = require("../utils/generateId.js");
 
 const userRouter = express.Router();
 
-// In-memory database
-// let users = [];
-// let p5Histories = [];
-// let rewardHistories = [];
 
-// Helper function to generate unique IDs
-function generateId() {
-    return Math.random().toString(36).substring(2, 10);
-}
+// "/user" -> User Level Activites
 
-// Get User Data
-// This will be used to display all the users to our frontend by sending an array of users as resonse
 userRouter.get('/users', async (req, res) => {
+
+    // Get User Data
+    // This will be used to display all the users to our frontend by sending an array of users as resonse
+
     try {
         const users = await User.find({});
-        // console.log(users);
-        res.json(users);
+        res.status(200).json(users);
     } catch (error) {
         console.log(error);
     }
+
 });
 
-// Create a New User
-// This will be used to create a new user and store it inside out database
+
 userRouter.post('/users', async (req, res) => {
+
+    // Create a New User
+    // This will be used to create a new user and store it inside out database
+
     try {
         const { name } = req.body;
         const id = generateId();
+
         const newUser = await User.create({
             id: id,
             name: name,
@@ -52,9 +52,15 @@ userRouter.post('/users', async (req, res) => {
     }
 });
 
-// Get a particular user data
-// This is used to send a particular user data based on the user id
+
+// "/user/:id" -> Particular User Related Activites
+
+
 userRouter.get('/users/:id', async (req, res) => {
+
+    // Get a particular user data
+    // This is used to send a particular user data based on the user id
+
     try {
         const { id } = req.params;
         const user = await User.find({ id: id });
@@ -71,18 +77,22 @@ userRouter.get('/users/:id', async (req, res) => {
 });
 
 
-// This route is to handle gifting p5 reward from one user to another
 userRouter.post('/users/:id/p5', async (req, res) => {
+
+    // This route is to handle gifting p5 reward from one user to another
+
     try {
         const { id } = req.params;
         const { amount, givenTo } = req.body;
-        
+
         const user = await User.find({ id: id });
         const giftedUser = await User.find({ id: givenTo });
 
-        console.log(giftedUser);
+        // console.log(user);
+        // console.log(giftedUser);
 
         if (user.length !== 0) {
+            // Check to make sure it is a valid transaction
             if (user[0].p5.balance >= amount) {
 
                 user[0].p5.balance -= Number(amount);
@@ -104,17 +114,17 @@ userRouter.post('/users/:id/p5', async (req, res) => {
                 giftedUser[0].save();
 
                 await P5History.create({
-                    userId: user[0].name,
+                    userId: id,
                     timeStamp: new Date(),
                     amount: amount,
-                    givenTo: giftedUser[0].name
+                    givenTo: givenTo
                 });
 
                 await RewardHistory.create({
-                    userId: giftedUser[0].name,
+                    userId: givenTo,
                     timestamp: new Date(),
                     amount: amount,
-                    givenBy: user[0].name
+                    givenBy: id
                 });
 
                 res.status(201).json(user);
@@ -148,6 +158,7 @@ userRouter.get('/users/:id/rewards', async (req, res) => {
 });
 
 
+// Need To work on this functionality of reverting back the transaction if the user tries to delete it
 userRouter.delete('/users/:id/p5/:historyId', async (req, res) => {
 
     try {
@@ -161,9 +172,9 @@ userRouter.delete('/users/:id/p5/:historyId', async (req, res) => {
             return console.log(his.timeStamp)
         });
 
-        console.log(typeof(d));
+        console.log(typeof (d));
 
-        const p5History = await P5History.find({timeStamp: d});
+        const p5History = await P5History.find({ timeStamp: d });
 
         console.log(p5History);
 
@@ -195,7 +206,6 @@ userRouter.delete('/users/:id/p5/:historyId', async (req, res) => {
 
 
 });
-
 
 
 module.exports = userRouter;

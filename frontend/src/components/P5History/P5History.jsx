@@ -7,24 +7,25 @@ function P5History() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/users/${id}`)
+        fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/users/${id}`)
             .then(response => response.json())
             .then(data => setUser(data));
 
-        fetch(`http://localhost:5000/api/users/${id}`)
+        fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/users/${id}`)
             .then(response => response.json())
             .then(data => setP5History(data[0].p5.history));
     }, [id]);
 
+    // Need to work upon soon
     const handleDelete = async (historyId) => {
         console.log(historyId);
-        await fetch(`http://localhost:5000/api/users/${id}/p5/${historyId}`, { method: 'DELETE' })
+        await fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/users/${id}/p5/${historyId}`, { method: 'DELETE' })
             .then(() => {
                 setP5History(p5History.filter(history => history.timeStamp !== historyId));
             });
     };
 
-    console.log(p5History);
+    // console.log(p5History);
 
     return (
         <div className="container">

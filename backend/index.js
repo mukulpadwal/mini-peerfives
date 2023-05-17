@@ -13,17 +13,17 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Alloeing the cors
-app.use((req,res,next)=>{
-    res.setHeader('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
-    next(); 
-  });
+// Allowing the cors
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 // Routes
 app.use("/api", userRouter);
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

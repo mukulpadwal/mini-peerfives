@@ -7,13 +7,13 @@ function RewardHistory() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${id}`)
+    fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/users/${id}`)
       .then(response => response.json())
       .then(data => setUser(data));
   }, [id]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${id}/rewards`)
+    fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/users/${id}/rewards`)
       .then(response => response.json())
       .then(data => setRewardHistory(data));
   }, [id]);
